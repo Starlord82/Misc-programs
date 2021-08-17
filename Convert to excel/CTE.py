@@ -8,6 +8,9 @@ import camelot
 import pandas as pd
 
 filename = askopenfilename()
-tables = tabula.io.read_pdf(filename, stream = True)
 
-print(tables)
+join duplicate #df.groupby('value')['tempx'].apply(' '.join).reset_index()
+
+df = pd.read_csv(filename)
+
+print(df)
