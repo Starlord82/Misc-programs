@@ -3,9 +3,9 @@ import extract_msg
 import re
 import shutil
 
-os.chdir('C:\\Users\\asafd\\Desktop\\Dropbox\\דרך הנדסה\\הנדסה\\27_00\\2714\\2714-1\\תכתובת')
+os.chdir('C:\\Users\\data121\\Dropbox\\דרך הנדסה\\הנדסה\\27_00\\2714\\2714-1\\תכתובת')
 
-output_path = 'C:\\Users\\asafd\\Desktop\\Results'
+output_path = 'C:\\Users\\data121\\Desktop\\results'
 
 counter = 0
 
