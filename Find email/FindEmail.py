@@ -6,7 +6,7 @@ from tkinter import filedialog
 
 input_path = filedialog.askdirectory(title = "Choose folder to search in")
 output_path = filedialog.askdirectory(title = "Choose where to copy matches")
-word = input("Enter Keyword you want to search: ")
+
 
 counter = 0
 search_counter = 0
@@ -24,14 +24,20 @@ def find_word(file,word):
       print('msg copied')
    search_counter += 1
 
-
-
-for folder, subfolder, file in os.walk(input_path):
-   for f in file:
-      file_path = folder + "\\" + f
-      if re.search(r'\w+.msg', file_path):
-         find_word(file_path, word)
-
-
-print(f'{search_counter} files have been searched')
-print(f'{counter} files have been copied')
+while True:
+   word = input("Enter Keyword you want to search: ")
+   for folder, subfolder, file in os.walk(input_path):
+      for f in file:
+         file_path = folder + "\\" + f
+         if re.search(r'\w+.msg', file_path):
+            find_word(file_path, word)
+   print(f'{search_counter} files have been searched')
+   print(f'{counter} files have been copied')
+   again  = ""
+   while again.lower() not in ['y','n','yes','no']:
+      again = input("Do you want to search again? Enter 'y' or 'n': ")
+   if again.lower() in ['n','no']:
+      print('Thank you for using FindEmail')
+      break
+   else:
+      continue
