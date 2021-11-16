@@ -2,6 +2,30 @@ import pandas as pd
 from tkinter import filedialog
 from operator import itemgetter
 
+def check_num(df,hot_list,cold_list,overdue_list):
+	counter = []
+	h=[]
+	c=[]
+	o=[]
+	for row in range(rows):
+		result = [df.loc[row,str(col)] for col in range(1,7)]
+		numlist,d1,d2 = zip(*hot_list)
+		h.append(len([i for i in numlist if i in result]))
+		numlist,d1,d2 = zip(*cold_list)
+		c.append(len([i for i in numlist if i in result]))
+		numlist,d1 = zip(*overdue_list)
+		o.append(len([i for i in numlist if i in result]))
+	counter = list(zip(h,c,o))
+	meanh = round(sum(num for num in h)/len(h),2)
+	meanc = round(sum(num for num in c)/len(h),2)
+	meano = round(sum(num for num in o)/len(h),2)
+	print(f'Average hot numbers in every lottery in {rows} lotteries: {meanh}')
+	print(f'Average cold numbers in every lottery in {rows} lotteries: {meanc}')
+	print(f'Average overdue numbers in every lottery in {rows} lotteries: {meano}')
+	
+
+
+
 def FindCombo(combo,hot_list,lotto_df,rows):
 	##See if there was a combinations of exactly "Combo" appearances
 	result_combos = []
@@ -33,13 +57,13 @@ df = df.filter(new_col)
 my_columns = list(df.columns)
 df.rename(columns={my_columns[0] : "Date",my_columns[-1] : "Strong Number"}, inplace = "True")
 
+rows = 100
 ##Count number apperances
 dcounter = {}
 
 for x in range(1,38):
 	dcounter[str(x)] = 0 
 
-rows = 1500
 
 for row in range(rows):
 	for col in range(1,7):
@@ -56,7 +80,7 @@ hot_num = []
 
 for x in range(1,38):
 	num = df_new.loc[0,str(x)]
-	if len(hot_list) < 8:
+	if len(hot_list) < 6:
 		hot_list.append((x,num,round((num/rows)*100,2)))
 		hot_num.append(num)
 	else:
@@ -71,7 +95,7 @@ cold_num = []
 
 for x in range(1,38):
 	num = df_new.loc[0,str(x)]
-	if len(cold_list) < 8:
+	if len(cold_list) < 6:
 		cold_list.append((x,num,round((num/rows)*100,2)))
 		cold_num.append(num)
 	else:
@@ -92,11 +116,13 @@ for x in range(1,38):
 			first_appear.append((x,row+1))
 			break
 
-for x in range(8):
+for x in range(6):
 	max_tup_index = first_appear.index(max(first_appear,key=itemgetter(1)))
 	overdue_list.append(first_appear.pop(max_tup_index))
 
-
+hot_list.sort(key=itemgetter(0))
+cold_list.sort(key=itemgetter(0))
+overdue_list.sort(key=itemgetter(0))
 print(f'The hot numbers in {rows} lotteries are: \n{hot_list}')
 print(f'The cold numbers in {rows} lotteries are: \n{cold_list}')
 print(f'The 8 overdue numbers are: \n{overdue_list}')
@@ -131,13 +157,13 @@ for res in result_list:
 	if set(res).issubset(set(hot_list)):
 		print(res)
 
-combo_num = 6
+combo_num = 3
 lrange = 1900
 matches = FindCombo(combo_num,hot_list,df,lrange)
 
 print(f'This combination catched {combo_num} numbers in {len(matches)} lotteries out of {lrange}, \n{matches} lotteries ago')
 
-
+check_num(df,hot_list,cold_list,overdue_list)
 
 
 
